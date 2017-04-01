@@ -40,8 +40,8 @@ class FacebookSignIn(OAuthSignIn):
         super(FacebookSignIn, self).__init__('facebook')
         self.service = OAuth2Service(
             name='facebook',
-            client_id = '1354711041238777',
-            client_secret = '8aefc6e7d6e63c94b496aefa423918a7',
+            client_id = self.consumer_id,
+            client_secret = self.consumer_secret,
             authorize_url = 'https://graph.facebook.com/oauth/authorize',
             access_token_url = 'https://graph.facebook.com/oauth/access_token',
             base_url = 'https://graph.facebook.com/'
