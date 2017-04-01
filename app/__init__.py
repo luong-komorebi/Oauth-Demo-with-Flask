@@ -1,6 +1,6 @@
 from flask import Flask, redirect, url_for, render_template, flash
 from flask_sqlalchemy import SQLAlchemy
-from flask_login import LoginManager, current_user, login_user
+from flask_login import LoginManager, current_user, logout_user, login_user
 from flask_migrate import Migrate
 from app.oauth import OAuthSignIn
 
@@ -22,12 +22,17 @@ def create_app(config_name):
     lm.login_view = "auth.login"
 
     migrate = Migrate(app, db)
-    from app import models
+    from app.models import Customer
 
 
     @app.route('/')
     def index():
         return render_template('index.html')
+
+    @app.route('/logout')
+    def logout():
+        logout_user()
+        return redirect(url_for('index'))
 
     @app.route('/authorize/<provider>')
     def oauth_authorize(provider):
@@ -45,9 +50,9 @@ def create_app(config_name):
         if social_id is None:
             flash('Authentication failed.')
             return redirect(url_for('index'))
-        user = User.query.filter_by(social_id=social_id).first()
+        user = Customer.query.filter_by(social_id=social_id).first()
         if not user:
-            user = User(social_id=social_id, nickname=username, email=email)
+            user = Customer(social_id=social_id, nickname=username, email=email)
             db.session.add(user)
             db.session.commit()
         login_user(user, True)

@@ -21,3 +21,4 @@ app_config = {
     'dev': DevelopmentConfig,
     'prod': ProductionConfig
 }
+
