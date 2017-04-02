@@ -1,6 +1,6 @@
 from rauth import OAuth1Service, OAuth2Service 
 from flask import current_app, url_for, request, redirect, session
-import json
+import simplejson as json 
 """ 
 Common Structure
 """
@@ -49,6 +49,7 @@ class FacebookSignIn(OAuthSignIn):
         print (current_app.config)
 
     def authorize(self):
+        print (self.service.get_authorize_url())
         return redirect(self.service.get_authorize_url(
             scope = 'email',
             response_type = 'code',
